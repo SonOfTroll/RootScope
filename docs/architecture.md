@@ -8,7 +8,7 @@ RootScope is a modular Linux privilege escalation enumeration toolkit built in B
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     main.sh (Controller)                     │
+│                     main.sh (Controller)                    │
 │  CLI Parsing → Config Load → Module Orchestration → Reports │
 └─────────┬───────────┬───────────┬───────────┬───────────────┘
           │           │           │           │
