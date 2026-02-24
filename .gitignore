@@ -1,0 +1,7 @@
+output/
+*.log
+*.tmp
+*.cache
+*.swp
+.env
+

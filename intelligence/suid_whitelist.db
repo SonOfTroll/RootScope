@@ -1,0 +1,78 @@
+# ============================================================================
+# RootScope — intelligence/suid_whitelist.db
+# Known-safe SUID binaries — standard system binaries where SUID is expected.
+# Used to filter noise and highlight only non-standard SUID findings.
+# One binary path per line. Lines starting with # are comments.
+# ============================================================================
+# Authentication & session management
+/usr/bin/passwd
+/usr/bin/chfn
+/usr/bin/chsh
+/usr/bin/newgrp
+/usr/bin/gpasswd
+/usr/bin/expiry
+/usr/bin/chage
+# Privilege escalation (expected)
+/usr/bin/su
+/usr/bin/sudo
+/usr/bin/pkexec
+/usr/bin/doas
+# Mount utilities
+/usr/bin/mount
+/usr/bin/umount
+/usr/bin/fusermount
+/usr/bin/fusermount3
+/bin/mount
+/bin/umount
+# Network utilities
+/usr/bin/ping
+/usr/bin/ping6
+/usr/bin/traceroute
+/usr/bin/traceroute6
+/usr/sbin/pppd
+# Terminal utilities
+/usr/bin/wall
+/usr/bin/write
+/usr/bin/mesg
+/usr/lib/utempter/utempter
+# Cron
+/usr/bin/crontab
+/usr/bin/at
+# SSH
+/usr/lib/openssh/ssh-keysign
+/usr/libexec/openssh/ssh-keysign
+# Polkit
+/usr/lib/polkit-1/polkit-agent-helper-1
+/usr/libexec/polkit-agent-helper-1
+# D-Bus
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/libexec/dbus-daemon-launch-helper
+# Snap
+/usr/lib/snapd/snap-confine
+/snap/core/*/usr/lib/snapd/snap-confine
+# Printing
+/usr/bin/lppasswd
+/usr/sbin/cupsd
+# Xorg / display
+/usr/lib/xorg/Xorg.wrap
+/usr/bin/Xorg
+/usr/bin/startx
+# Systemd helpers
+/usr/lib/systemd/systemd-sulogin-shell
+# Mail
+/usr/bin/dotlockfile
+/usr/sbin/sendmail
+/usr/sbin/postdrop
+/usr/sbin/postqueue
+# Package managers (distro-specific)
+/usr/bin/staprun
+/usr/bin/locate
+/usr/bin/mlocate
+# Compatibility / legacy paths
+/bin/su
+/bin/ping
+/bin/ping6
+/sbin/mount.nfs
+/sbin/mount.cifs
+/sbin/unix_chkpwd
+/usr/sbin/unix_chkpwd
